@@ -2,27 +2,14 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import {
   ArrowLeft,
   ArrowRight,
-	  ArrowUpRight,
-	  Brain,
-	  Bot,
+  ArrowUpRight,
   Check,
-  ChevronDown,
-  Clock3,
-  Code2,
-  Database,
   Eye,
   ExternalLink,
   Github,
-  Layers3,
   Linkedin,
   Mail,
-  MapPin,
   Menu,
-  Palette,
-  Send,
-  ShieldCheck,
-  Sparkles,
-  Video,
   X,
 } from "lucide-react";
 
@@ -58,7 +45,7 @@ const projects: Project[] = [
     title: "Biz Trade Mart",
     badge: "Frontend Developer · Team role",
     year: "2024",
-    summary: "A faster, more resilient B2B marketplace for buyers and verified suppliers across 100+ countries.",
+    summary: "A B2B marketplace experience connecting buyers and suppliers through discovery, RFQs and clear product workflows.",
     overview: "Multi-country B2B marketplace connecting buyers and verified suppliers through RFQ requests, seller discovery, and category browsing.",
     goals: "Give buyers and suppliers a reliable marketplace experience at scale while shipping new modules quickly.",
     problem: "Marketplace discovery and supplier communication needed to feel fast and trustworthy across a broad set of categories and markets.",
@@ -94,7 +81,7 @@ const projects: Project[] = [
     future: "Add reminders, calendar sync, richer availability rules, and an authenticated client workspace.",
 	    tech: ["FastAPI", "Python", "Full-stack"],
 	    image: "/assets/projects/e-consultancy.png",
-	    images: ["/assets/projects/e-consultancy.png", "/assets/projects/e-consultancy-2.png", "/assets/projects/e-consultancy-3.png", "/assets/projects/e-consultancy-4.png"],
+	    images: ["/assets/projects/e-consultancy.png", "/assets/projects/e-consultancy-1.png", "/assets/projects/e-consultancy-2.png", "/assets/projects/e-consultancy-3.png", "/assets/projects/e-consultancy-4.png"],
     live: "https://e-consultancy.onrender.com/",
     accent: "amber",
     placement: "featured",
@@ -117,7 +104,7 @@ const projects: Project[] = [
     future: "Expand automated content workflows, case studies, lead capture, and richer service onboarding.",
 	    tech: ["Next.js", "Vercel"],
 	    image: "/assets/projects/azolic.png",
-	    images: ["/assets/projects/azolic.png", "/assets/projects/azolic-2.png", "/assets/projects/azolic-3.png", "/assets/projects/azolic-4.png"],
+	    images: ["/assets/projects/azolic-1.png", "/assets/projects/azolic-2.png", "/assets/projects/azolic-3.png", "/assets/projects/azolic-4.png"],
     live: "https://azura-rose.vercel.app/",
     accent: "violet",
     placement: "featured",
@@ -141,7 +128,7 @@ const projects: Project[] = [
     future: "Add pull-request awareness, team workspaces, visual diffing, and richer architecture recommendations.",
 	    tech: ["LangChain", "LangGraph", "ChromaDB", "Python", "Groq/Mistral API"],
 	    image: "/assets/projects/repogent-ai.png",
-	    images: ["/assets/projects/repogent-ai.png", "/assets/projects/repogent-ai-2.png", "/assets/projects/repogent-ai-3.png", "/assets/projects/repogent-ai-4.png"],
+	    images: ["/assets/projects/repogent-ai.png"],
     live: "https://repoonboarding-agent.onrender.com/",
     accent: "cyan",
     placement: "gallery",
@@ -165,7 +152,7 @@ const projects: Project[] = [
     future: "Add recruiter collaboration, custom scorecards, calibrated rubrics, and exportable hiring packets.",
 	    tech: ["LangChain", "Groq", "FAISS", "Streamlit"],
 	    image: "/assets/projects/hirelens.png",
-	    images: ["/assets/projects/hirelens.png", "/assets/projects/hirelens-2.png", "/assets/projects/hirelens-3.png", "/assets/projects/hirelens-4.png"],
+	    images: ["/assets/projects/hirelens.png"],
     live: "https://hirelens-screener.streamlit.app/",
     accent: "amber",
     placement: "gallery",
@@ -194,15 +181,8 @@ const projects: Project[] = [
   },
 ];
 
-const featuredProjects = projects.filter((project) => project.placement === "featured");
-const galleryProjects = projects.filter((project) => project.placement === "gallery");
-
-const skills = [
-  { icon: Code2, title: "Full Stack Engineering", tag: "WEB3.0", tone: "cyan", copy: "Building scalable, robust web applications from intuitive frontends to complex backend infrastructures.", items: ["SPA Development", "API Integration", "Database Design"] },
-  { icon: Bot, title: "AI Solutions", tag: "CORE", tone: "blue", copy: "Integrating advanced AI models to create intelligent chatbots, predictive systems, and automated workflows.", items: ["LLM Integration", "Neural Networks", "Smart Agents"] },
-  { icon: Sparkles, title: "Automation", tag: "BOTS", tone: "rose", copy: "Streamlining business processes with custom bots, scrapers, and workflow automation tools.", items: ["Browser Automation", "Data Extraction", "Workflow Scripts"] },
-  { icon: Palette, title: "Design", tag: "UI/UX", tone: "amber", copy: "Creating visual experiences with modern design principles, from wireframes to polished interfaces.", items: ["Figma", "Brand Identity", "Motion Graphics"] },
-];
+const featuredProjects = projects.filter((project) => ["repogent-ai", "hirelens", "biz-trade-mart"].includes(project.id));
+const galleryProjects = projects.filter((project) => !featuredProjects.some((featured) => featured.id === project.id));
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return <span className="section-label">{children}</span>;
@@ -214,14 +194,14 @@ function ScreenshotPlaceholder({ project, index = 1, compact = false }: { projec
       <div className="placeholder-scanline" />
       <div className="placeholder-symbol">{project.id === "repogent-ai" ? "◈" : project.id === "hirelens" ? "⌁" : project.id === "mediconnect" ? "✚" : "◌"}</div>
       <span>{project.title.toUpperCase()} · SCREENSHOT {index}</span>
-      <small>Add {index}.png to the project screenshot folder</small>
+      <small>Project preview unavailable</small>
     </div>
   );
 }
 
 function ProjectScreenshot({ project, compact = false, index = 1 }: { project: Project; compact?: boolean; index?: number }) {
   const [failed, setFailed] = useState(false);
-  const source = project.images?.[index - 1] ?? project.image;
+  const source = project.images ? project.images[index - 1] : project.image;
   if (!source || failed) return <ScreenshotPlaceholder project={project} index={index} compact={compact} />;
   return <div className={`project-image-frame accent-${project.accent} ${compact ? "compact" : ""}`}><img src={source} alt={`${project.title} project screenshot ${index}`} loading="lazy" onError={() => setFailed(true)} /></div>;
 }
@@ -240,10 +220,53 @@ function ProjectCard({ project, onOpen }: { project: Project; onOpen: (project: 
 function ProjectModal({ project, onClose }: { project: Project | null; onClose: () => void }) {
   const [shot, setShot] = useState(0);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
-  useEffect(() => { setShot(0); if (project) { document.body.classList.add("modal-open"); closeButtonRef.current?.focus(); } else document.body.classList.remove("modal-open"); return () => document.body.classList.remove("modal-open"); }, [project]);
-  useEffect(() => { if (!project) return; const onKeyDown = (event: KeyboardEvent) => { if (event.key === "Escape") onClose(); if (event.key === "ArrowRight") setShot((value) => (value + 1) % 4); if (event.key === "ArrowLeft") setShot((value) => (value + 3) % 4); }; window.addEventListener("keydown", onKeyDown); return () => window.removeEventListener("keydown", onKeyDown); }, [project, onClose]);
+  const imageCount = project?.images?.length ?? (project?.image ? 1 : 0);
+  useEffect(() => {
+    setShot(0);
+    if (project) {
+      document.body.classList.add("modal-open");
+      closeButtonRef.current?.focus();
+    } else {
+      document.body.classList.remove("modal-open");
+    }
+    return () => document.body.classList.remove("modal-open");
+  }, [project]);
+  useEffect(() => {
+    if (!project) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") onClose();
+      if (imageCount > 1 && event.key === "ArrowRight") setShot((value) => (value + 1) % imageCount);
+      if (imageCount > 1 && event.key === "ArrowLeft") setShot((value) => (value + imageCount - 1) % imageCount);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [project, onClose, imageCount]);
   if (!project) return null;
-  return <div className="modal-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) onClose(); }}><section className="project-modal" role="dialog" aria-modal="true" aria-labelledby="project-modal-title"><div className="modal-heading"><div><div className={`modal-meta accent-text-${project.accent}`}>{project.badge} · {project.year}</div><h2 id="project-modal-title">{project.title}</h2></div><button ref={closeButtonRef} className="icon-button" onClick={onClose} aria-label="Close project details"><X size={20} /></button></div><div className="modal-screens"><ProjectScreenshot project={project} index={shot + 1} /><div className="screenshot-controls"><button className="icon-button" onClick={() => setShot((value) => (value + 3) % 4)} aria-label="Previous screenshot"><ArrowLeft size={17} /></button><div className="screenshot-dots">{[0, 1, 2, 3].map((index) => <button key={index} aria-label={`Show screenshot ${index + 1}`} className={shot === index ? "active" : ""} onClick={() => setShot(index)} />)}</div><button className="icon-button" onClick={() => setShot((value) => (value + 1) % 4)} aria-label="Next screenshot"><ArrowRight size={17} /></button></div></div><div className="modal-techline">{project.tech.join(" · ")}</div><div className="modal-body"><DetailBlock title="Overview"><p>{project.overview}</p></DetailBlock><DetailBlock title="Goals"><p>{project.goals}</p></DetailBlock><DetailBlock title="Problem Statement"><p>{project.problem}</p></DetailBlock><DetailBlock title="Key Features"><ul>{project.features.map((feature) => <li key={feature}><Check size={13} />{feature}</li>)}</ul></DetailBlock><DetailBlock title="Frontend Architecture"><p>{project.frontend}</p></DetailBlock><DetailBlock title="Backend Architecture"><p>{project.backend}</p></DetailBlock>{project.ai && <DetailBlock title="AI Components"><p>{project.ai}</p></DetailBlock>}<DetailBlock title="Technical Challenges"><p>{project.challenges}</p></DetailBlock><DetailBlock title="Technical Implementation"><p>{project.implementation}</p></DetailBlock><DetailBlock title="Tech Stack"><div className="modal-tags">{project.tech.map((tech) => <span key={tech}>{tech}</span>)}</div></DetailBlock><DetailBlock title="Results"><p>{project.results}</p></DetailBlock><DetailBlock title="Future Improvements"><p>{project.future}</p></DetailBlock></div><div className="modal-actions">{project.live && <a className="primary-button" href={project.live} target="_blank" rel="noreferrer">VIEW LIVE PROJECT <ExternalLink size={15} /></a>}{project.github && <a className="secondary-button" href={project.github} target="_blank" rel="noreferrer"><Github size={15} /> GITHUB</a>}</div></section></div>;
+  return <div className="modal-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) onClose(); }}>
+    <section className="project-modal" role="dialog" aria-modal="true" aria-labelledby="project-modal-title">
+      <div className="modal-heading"><div><div className={`modal-meta accent-text-${project.accent}`}>{project.badge} · {project.year}</div><h2 id="project-modal-title">{project.title}</h2></div><button ref={closeButtonRef} className="icon-button" onClick={onClose} aria-label="Close project details"><X size={20} /></button></div>
+      <div className="modal-screens">
+        <ProjectScreenshot project={project} index={shot + 1} />
+        {imageCount > 1 && <div className="screenshot-controls"><button className="icon-button" onClick={() => setShot((value) => (value + imageCount - 1) % imageCount)} aria-label="Previous screenshot"><ArrowLeft size={17} /></button><div className="screenshot-dots">{Array.from({ length: imageCount }, (_, index) => <button key={index} aria-label={`Show screenshot ${index + 1}`} className={shot === index ? "active" : ""} onClick={() => setShot(index)} />)}</div><button className="icon-button" onClick={() => setShot((value) => (value + 1) % imageCount)} aria-label="Next screenshot"><ArrowRight size={17} /></button></div>}
+      </div>
+      <div className="modal-techline">{project.tech.join(" · ")}</div>
+      <div className="modal-body">
+        <DetailBlock title="Overview"><p>{project.overview}</p></DetailBlock>
+        <DetailBlock title="Goals"><p>{project.goals}</p></DetailBlock>
+        <DetailBlock title="Problem Statement"><p>{project.problem}</p></DetailBlock>
+        <DetailBlock title="Key Features"><ul>{project.features.map((feature) => <li key={feature}><Check size={13} />{feature}</li>)}</ul></DetailBlock>
+        <DetailBlock title="Frontend Architecture"><p>{project.frontend}</p></DetailBlock>
+        <DetailBlock title="Backend Architecture"><p>{project.backend}</p></DetailBlock>
+        {project.ai && <DetailBlock title="AI Components"><p>{project.ai}</p></DetailBlock>}
+        <DetailBlock title="Technical Challenges"><p>{project.challenges}</p></DetailBlock>
+        <DetailBlock title="Technical Implementation"><p>{project.implementation}</p></DetailBlock>
+        <DetailBlock title="Tech Stack"><div className="modal-tags">{project.tech.map((tech) => <span key={tech}>{tech}</span>)}</div></DetailBlock>
+        <DetailBlock title="Results"><p>{project.results}</p></DetailBlock>
+        <DetailBlock title="Future Improvements"><p>{project.future}</p></DetailBlock>
+      </div>
+      <div className="modal-actions">{project.live && <a className="primary-button" href={project.live} target="_blank" rel="noreferrer">VIEW LIVE PROJECT <ExternalLink size={15} /></a>}{project.github && <a className="secondary-button" href={project.github} target="_blank" rel="noreferrer"><Github size={15} /> GITHUB</a>}</div>
+    </section>
+  </div>;
 }
 
 function DetailBlock({ title, children }: { title: string; children: React.ReactNode }) { return <div className="detail-block"><h3>{title}</h3>{children}</div>; }
@@ -253,27 +276,126 @@ function SkillDomain({ title, label, items, tone }: { title: string; label: stri
 export default function Home() {
   const [activeSlide, setActiveSlide] = useState(0);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-  const [paused, setPaused] = useState(false);
   const [mobileMenu, setMobileMenu] = useState(false);
   const [filter, setFilter] = useState("All");
-  const visibleGallery = useMemo(() => filter === "All" ? galleryProjects : galleryProjects.filter((project) => filter === "AI / ML" ? project.id === "repogent-ai" || project.id === "hirelens" : filter === "Full Stack" ? project.id === "mediconnect" : false), [filter]);
-	  useEffect(() => { if (selectedProject) return; const timer = window.setInterval(() => setActiveSlide((value) => (value + 1) % featuredProjects.length), 4500); return () => window.clearInterval(timer); }, [selectedProject]);
-	  useEffect(() => { document.body.classList.toggle("mobile-menu-open", mobileMenu); return () => document.body.classList.remove("mobile-menu-open"); }, [mobileMenu]);
-	  useEffect(() => { const topbar = document.querySelector(".topbar"); const links = Array.from(document.querySelectorAll<HTMLAnchorElement>(".nav-links a")); const sections = ["about", "experience", "skills", "works", "contact"].map((id) => document.getElementById(id)).filter(Boolean) as HTMLElement[]; const updateScrolled = () => topbar?.classList.toggle("is-scrolled", window.scrollY > 18); const setActive = (id: string) => links.forEach((link) => link.classList.toggle("active", link.getAttribute("href") === `#${id}`)); updateScrolled(); setActive("about"); window.addEventListener("scroll", updateScrolled, { passive: true }); const observer = new IntersectionObserver((entries) => { const visible = entries.filter((entry) => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0]; if (visible) setActive(visible.target.id); }, { rootMargin: "-26% 0px -58% 0px", threshold: [0.05, 0.2, 0.5] }); sections.forEach((section) => observer.observe(section)); return () => { window.removeEventListener("scroll", updateScrolled); observer.disconnect(); }; }, []);
+  const visibleGallery = useMemo(() => filter === "All" ? galleryProjects : galleryProjects.filter((project) => filter === "Client work" ? project.id === "e-consultancy" || project.id === "azolic" : filter === "Full Stack" ? project.id === "mediconnect" || project.id === "e-consultancy" : false), [filter]);
+  useEffect(() => {
+    document.body.classList.toggle("mobile-menu-open", mobileMenu);
+    return () => document.body.classList.remove("mobile-menu-open");
+  }, [mobileMenu]);
   const activeProject = featuredProjects[activeSlide];
-  return <div className="portfolio-shell">
-    <header className="topbar"><div className="container nav-inner"><a className="brand" href="#about"><span>ABHISHEK</span> KUMAR</a><div className="status-pill"><i /> SYSTEMS ONLINE</div><nav className={mobileMenu ? "nav-links open" : "nav-links"}>{["about", "experience", "skills", "works", "contact"].map((item) => <a key={item} href={`#${item}`} onClick={() => setMobileMenu(false)}>{item === "works" ? "Best Works" : item === "contact" ? "Contacts" : item === "about" ? "About Me" : item[0].toUpperCase() + item.slice(1)}</a>)}</nav><div className="nav-actions"><span className="language-chip">EN <span>⇄</span></span><a className="hire-button" href="#contact">AVAILABLE FOR HIRE</a><button className="menu-button" onClick={() => setMobileMenu((value) => !value)} aria-label="Toggle navigation">{mobileMenu ? <X size={19} /> : <Menu size={19} />}</button></div></div></header>
+  const handleContactSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const form = new FormData(event.currentTarget);
+    const subject = `Portfolio enquiry from ${String(form.get("name") || "Website visitor")}`;
+    const body = [
+      `Name: ${form.get("name") || ""}`,
+      `Email: ${form.get("email") || ""}`,
+      `Topic: ${form.get("topic") || "Not specified"}`,
+      "",
+      String(form.get("message") || ""),
+    ].join("\n");
+    window.location.href = `mailto:abhishkdk@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  };
+  return <div className="portfolio-shell editorial-shell">
+    <header className="topbar editorial-topbar">
+      <div className="container nav-inner">
+        <a className="brand editorial-brand" href="#about">Abhishek Kumar<span>/AI</span></a>
+        <div className="editorial-availability"><i /> Open to remote AI Engineer roles</div>
+        <nav className={mobileMenu ? "nav-links open" : "nav-links"} aria-label="Main navigation">
+          {[["about","Origin"],["works","Projects"],["experience","Experience"],["education","Education"],["skills","Skills"],["contact","Contact"]].map(([id,label],index) => <a key={id} href={`#${id}`} onClick={() => setMobileMenu(false)}><small>0{index + 1}</small> {label}</a>)}
+        </nav>
+        <div className="nav-actions">
+          <a className="hire-button editorial-hire" href="#contact">Get in touch <ArrowUpRight size={13} /></a>
+          <button className="menu-button" onClick={() => setMobileMenu((value) => !value)} aria-label="Toggle navigation" aria-expanded={mobileMenu}>{mobileMenu ? <X size={19} /> : <Menu size={19} />}</button>
+        </div>
+      </div>
+    </header>
     <main>
-      <section id="about" className="hero-section container"><div className="section-intro center"><h1>About <span>Me</span></h1><div className="title-rule" /><p>I build full-stack web apps and AI-powered tools — from RAG pipelines to production React frontends — for startups and clients who need to ship fast without cutting corners.</p></div><div className="hero-grid"><div className="profile-card hud-card"><div className="portrait"><div className="portrait-glow" /><div className="portrait-core">⚡<div /></div><span className="mono cyan">NEURAL DEVELOPER UNIT</span><strong>Abhishek Kumar</strong><div className="portrait-tag">⚡ SYSTEMS <b>ONLINE</b></div><span className="command-pill">&gt;_</span><div className="available-pill">● AVAILABLE FOR HIRE</div><div className="location"><MapPin size={12} /> Global Remote · Bengaluru / Worldwide</div></div><div className="language-row"><span>🇬🇧 <b>English</b> <em>(Fluent)</em></span><span>🇮🇳 <b>Hindi</b> <em>(Native)</em></span><span>🤖 <b>Binary / Code</b> <em>(0101)</em></span></div></div><div className="profile-copy hud-card"><div className="card-topline"><span className="mono cyan">● CORE SPECIALIZATION ARCHITECTURE</span><a className="small-button" href="#contact">📄 LOAD FULL PROFILE <ArrowUpRight size={13} /></a></div><div className="copy-body"><h2>Architecting the<br /><span>Intelligent Web</span></h2><p>I am a <b>Full Stack Developer</b>, <b>AI Specialist</b>, and <b>Systems Architect</b> focused on building the next generation of digital products. My work sits at the intersection of elegant code, thoughtful design, and neural automation.</p><p>With deep expertise in <strong className="amber">Python</strong>, <strong className="cyan">React / Next.js</strong>, and modern <strong className="violet">Vector LLM</strong> ecosystems, I engineer resilient living systems that learn, adapt, and scale.</p></div><div className="metrics"><div><b>8+</b><span>YEARS EXP</span></div><div><b className="cyan">15+</b><span>PROJECTS</span></div><div><b className="amber">24/7</b><span>AVAILABILITY</span></div><div><b>5★</b><span>CLIENT RATING</span></div></div></div></div></section>
-	      <section id="experience" className="section container"><div className="section-heading"><div><SectionLabel>EXPERIENCE</SectionLabel><h2>Where I've worked</h2></div><a href="#contact" className="muted-link">More about my journey <ArrowRight size={13} /></a></div><div className="timeline"><Experience title="Frontend Developer" company="Biz Trade Mart — Bizindo Trade Mart Pvt. Ltd." date="Dec 2024 – Feb 2026" mode="Remote" tone="green" bullets={["Architected a scalable component library in React.js with Tailwind CSS using OOP principles, reducing UI development time by 40% across 10+ product modules.", "Engineered lazy-loading, code-splitting, and memoization strategies that improved Lighthouse performance from 62 to 91.", "Designed RESTful API contracts and resolved 30+ cross-browser regressions, reducing production bug reports by 35%."]} /><Experience title="AI Research Intern" company="Planto AI" date="Nov 2024 – May 2025" mode="Remote" tone="cyan" bullets={["Contributed to a 6-month AI copilot research effort, designing prompt engineering and RAG workflows that improved response relevance by 35%.", "Built and evaluated LangChain features against 500+ test queries to reduce hallucination rate by approximately 25%.", "Optimized vector retrieval and cut average copilot response latency by 30%."]} /></div></section>
-	      <section id="skills" className="section container"><div className="section-intro center"><SectionLabel>TECHNICAL ARCHITECTURE</SectionLabel><h2>Skills &amp; Ecosystem Matrix</h2><p>From algorithmic neural reasoning to pixel-perfect client applications.</p></div><div className="skills-radar-layout"><div className="skills-domain-stack"><SkillDomain title="Frontend Systems &amp; LLMs" label="FRONTEND SYSTEMS &amp; LLMS" items={["React / Next.js", "TypeScript", "Tailwind CSS", "Three.js", "Chrome Extensions", "LLMs / GPT", "LangChain", "RAG", "Vector DB"]} tone="cyan" /><SkillDomain title="AI &amp; Automation" label="AI / AUTOMATION" items={["Smart Agents", "Browser Automation", "Data Extraction", "Workflow Scripts", "Prompt Engineering", "RAG Pipelines"]} tone="violet" /></div><div className="experience-core" aria-label="8 plus years experience, full stack and AI"><div className="experience-ring" /><div className="experience-core-inner"><Brain size={34} /><strong>3+</strong><span>EXPERIENCE</span><small>FULL STACK + AI</small></div></div><div className="skills-domain-stack"><SkillDomain title="Backend Logic &amp; Data" label="BACKEND LOGIC &amp; DATA" items={["Python / FastAPI", "Django", "Node.js", "PostgreSQL", "Supabase", "REST API", "Docker"]} tone="amber" /><SkillDomain title="Design &amp; UI/UX" label="DESIGN &amp; UI/UX" items={["Figma", "Brand Identity", "Motion Graphics", "Design Systems", "Prototyping", "Interaction Design"]} tone="rose" /></div></div></section>
-	      <section id="works" className="section container"><div className="section-heading"><div><h2>Best Works</h2><SectionLabel>CURATED PORTFOLIO SELECTION</SectionLabel></div><div className="carousel-controls"><button className="icon-button" onClick={() => setActiveSlide((value) => (value + featuredProjects.length - 1) % featuredProjects.length)} aria-label="Previous featured project"><ArrowLeft size={16} /></button><button className="icon-button" onClick={() => setActiveSlide((value) => (value + 1) % featuredProjects.length)} aria-label="Next featured project"><ArrowRight size={16} /></button></div></div><div className="featured-layout" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)} onFocus={() => setPaused(true)} onBlur={() => setPaused(false)}><button className={`featured-visual accent-${activeProject.accent}`} onClick={() => setSelectedProject(activeProject)} aria-label={`Open ${activeProject.title} case study`}><div className="featured-ambient" /><div className="featured-top"><span>{activeProject.title.toUpperCase()} · FEATURED</span><span>{activeProject.year}</span></div><div className="featured-media"><ProjectScreenshot project={activeProject} compact /></div><div className="featured-center"><SectionLabel>{activeProject.badge}</SectionLabel><h3>{activeProject.title}</h3><p>{activeProject.summary}</p></div><div className="featured-bottom"><b>{activeProject.tech.join(" · ")}</b><span>CLICK TO OPEN CASE STUDY <ArrowUpRight size={14} /></span></div></button><div className="featured-detail hud-card"><div className="project-badge">{activeProject.badge}</div><h3>{activeProject.title}</h3><p>{activeProject.overview}</p><div className="feature-techs">{activeProject.tech.map((tech) => <span key={tech}>{tech}</span>)}</div><button className="primary-button" onClick={() => setSelectedProject(activeProject)}>VIEW CASE STUDY <ArrowUpRight size={14} /></button></div></div><div className="pagination">{featuredProjects.map((project, index) => <button key={project.id} onClick={() => setActiveSlide(index)} className={index === activeSlide ? "active" : ""} aria-label={`Show ${project.title}`} />)}</div><div className="archive-heading"><h3>Portfolio Gallery</h3><p>COMPLETE PROJECT ARCHIVE</p><div className="filter-tabs">{["All", "Full Stack", "AI / ML", "Design"].map((item) => <button key={item} className={filter === item ? "selected" : ""} onClick={() => setFilter(item)}>{item}</button>)}</div></div><div className="gallery-grid">{visibleGallery.map((project) => <ProjectCard key={project.id} project={project} onOpen={setSelectedProject} />)}</div><div className="more-projects"><h3>And Hundreds of Projects More</h3><a href="#contact">See More Works <ArrowUpRight size={14} /></a></div></section>
-      <section className="discovery container"><div className="discovery-card hud-card"><div className="calendar-pill"><span>●</span> CALENDAR OPEN</div><div className="calendar-icon"><Clock3 size={22} /></div><h2>Book a <span>Discovery</span> <em>Call</em></h2><p>Prefer a real conversation over a form? Grab a time that suits you and let's explore your idea together — a relaxed 30-minute call, zero pressure, zero cost.</p><div className="discovery-pills"><span><Clock3 size={13} /> 30-Min Session</span><span><Video size={13} /> Video Call</span><span><Check size={13} /> Free Consultation</span></div><a className="primary-button" href="#contact">SCHEDULE A MEETING <ArrowRight size={15} /></a><small>Instant confirmation · Reschedule anytime · Booking link placeholder</small></div></section>
-      <section id="contact" className="contact-section section container"><div className="contact-copy"><div className="system-pill">● SYSTEM ONLINE</div><h2>Let's<br /><span>Sync.</span></h2><p>Bridging human intent with artificial intelligence. Send a signal to initiate collaboration on your next breakthrough.</p><div className="contact-links"><a href="mailto:abhishkdk@gmail.com"><Mail size={16} /> <span><small>EMAIL</small>abhishkdk@gmail.com</span><ArrowRight size={14} /></a><a href="https://github.com/Abhishk-Kumar" target="_blank" rel="noreferrer"><Github size={16} /> <span><small>GITHUB</small>Abhishk-Kumar</span><ArrowRight size={14} /></a><a href="https://linkedin.com/in/abhishkatwork" target="_blank" rel="noreferrer"><Linkedin size={16} /> <span><small>LINKEDIN</small>abhishkatwork</span><ArrowRight size={14} /></a></div></div><div className="contact-form-card hud-card"><div className="form-heading"><div><h3>Transmission Data</h3><p>SECURE CHANNEL: <span>ENCRYPTED</span></p></div><ShieldCheck size={18} className="cyan" /></div><form onSubmit={(event) => { event.preventDefault(); window.alert("Transmission signal dispatched successfully."); }}><div className="form-row"><input required placeholder="Full name" aria-label="Full name" /><input required type="email" placeholder="Email address" aria-label="Email address" /></div><div className="form-row"><select aria-label="Project type" defaultValue=""><option value="" disabled>Project type</option><option>Full-stack product</option><option>AI / automation</option><option>Design system</option></select><select aria-label="Estimated budget" defaultValue=""><option value="" disabled>Est. budget</option><option>Under $2k</option><option>$2k–$5k</option><option>$5k+</option></select></div><textarea required rows={5} placeholder="Tell me about your project" aria-label="Message" /><button className="primary-button" type="submit">TRANSMIT SIGNAL <Send size={14} /></button></form></div></section>
+      <section id="about" className="hero-section container editorial-hero">
+        <div className="hero-kicker"><span /> PORTFOLIO · 2026 <span className="kicker-divider">/</span> KANPUR, INDIA</div>
+        <div className="editorial-hero-grid">
+          <div className="editorial-hero-title">
+            <h1>AI Engineer<span className="hero-period">.</span></h1>
+            <p className="hero-subtitle">Building useful AI products, from LLM workflows to the full-stack systems around them.</p>
+            <div className="hero-actions">
+              <a className="primary-button" href="#works">Explore projects <ArrowDownRightIcon /></a>
+              <a className="secondary-button" href="https://drive.google.com/file/d/1gy_ju_-nIGClPQ5N21pBQGcyyxqnQIEw/view?usp=sharing" target="_blank" rel="noreferrer"><ExternalLink size={14} /> View resume</a>
+            </div>
+          </div>
+          <div className="editorial-hero-note">
+            <span className="mono-label">01 / INTRODUCTION</span>
+            <p>I work across Python, LangChain, LangGraph, FastAPI, React and TypeScript to build LLM-powered applications, retrieval workflows and dependable product interfaces.</p>
+            <div className="hero-note-rule" />
+            <div className="hero-note-meta"><span>BASED IN</span><b>Kanpur, India</b></div>
+            <div className="hero-note-meta"><span>WORK MODE</span><b>Remote</b></div>
+          </div>
+        </div>
+        <div className="hero-bottom-line"><span>APPLIED AI <b>·</b> FULL-STACK ENGINEERING <b>·</b> PRODUCT BUILDING</span><a href="#experience">Scroll to explore <ArrowDownRightIcon /></a></div>
+      </section>
+
+      <section className="editorial-intro-section">
+        <div className="container editorial-intro-grid">
+          <div><SectionLabel>01 — ORIGIN</SectionLabel><h2>Engineering at the intersection of <em>AI and product.</em></h2></div>
+          <div className="editorial-intro-copy">
+            <p>I’m an AI Engineer and full-stack developer focused on building practical applications with large language models. My work includes retrieval-augmented generation, multi-step agent workflows, API development, and the interfaces that make these systems useful.</p>
+            <p>I enjoy taking a product from an early technical idea to a working application — making deliberate choices around retrieval quality, latency, usability, and maintainability.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="works" className="section container editorial-projects">
+        <div className="section-heading editorial-section-heading"><div><SectionLabel>02 — SELECTED WORK</SectionLabel><h2>AI projects, in practice.</h2><p>Systems I’ve designed and built, with the architecture and decisions behind them.</p></div><div className="carousel-controls"><button className="icon-button" onClick={() => setActiveSlide((value) => (value + featuredProjects.length - 1) % featuredProjects.length)} aria-label="Previous project"><ArrowLeft size={16} /></button><button className="icon-button" onClick={() => setActiveSlide((value) => (value + 1) % featuredProjects.length)} aria-label="Next project"><ArrowRight size={16} /></button></div></div>
+        <div className="featured-layout editorial-featured-layout">
+          <button className={`featured-visual editorial-featured-visual accent-${activeProject.accent}`} onClick={() => setSelectedProject(activeProject)} aria-label={`Open ${activeProject.title} case study`}>
+            <div className="featured-top"><span>FEATURED PROJECT / {String(activeSlide + 1).padStart(2,"0")}</span><span>{activeProject.year}</span></div>
+            <div className="featured-media"><ProjectScreenshot project={activeProject} compact /></div>
+            <div className="featured-center"><SectionLabel>{activeProject.badge}</SectionLabel><h3>{activeProject.title}</h3><p>{activeProject.summary}</p></div>
+            <div className="featured-bottom"><b>{activeProject.tech.join(" · ")}</b><span>OPEN CASE STUDY <ArrowUpRight size={14} /></span></div>
+          </button>
+          <div className="featured-detail editorial-featured-detail">
+            <span className="mono-label">SYSTEM OVERVIEW</span><h3>{activeProject.title}</h3><p>{activeProject.overview}</p>
+            <div className="architecture-preview"><span>INPUT</span><b>{activeProject.id === "repogent-ai" ? "GitHub repository / ZIP" : activeProject.id === "hirelens" ? "Resume documents" : "Product interface"}</b><i>↓</i><span>PROCESS</span><b>{activeProject.id === "repogent-ai" ? "Parse · Index · Retrieve · Explain" : activeProject.id === "hirelens" ? "Extract · Evaluate · Compare" : "React components · REST APIs"}</b><i>↓</i><span>OUTPUT</span><b>{activeProject.id === "repogent-ai" ? "Codebase map + grounded Q&A" : activeProject.id === "hirelens" ? "Structured candidate reports" : "Responsive B2B workflows"}</b></div>
+            <div className="feature-techs">{activeProject.tech.map((tech) => <span key={tech}>{tech}</span>)}</div>
+            <button className="primary-button" onClick={() => setSelectedProject(activeProject)}>Read case study <ArrowUpRight size={14} /></button>
+          </div>
+        </div>
+        <div className="pagination editorial-pagination">{featuredProjects.map((project,index)=><button key={project.id} onClick={()=>setActiveSlide(index)} className={index===activeSlide?"active":""} aria-label={`Show ${project.title}`} />)}</div>
+        <div className="archive-heading editorial-archive-heading"><div><SectionLabel>03 — MORE PROJECTS</SectionLabel><h3>Other selected work</h3></div><div className="filter-tabs">{["All","Client work","Full Stack"].map((item)=><button key={item} className={filter===item?"selected":""} onClick={()=>setFilter(item)}>{item}</button>)}</div></div>
+        <div className="gallery-grid editorial-gallery-grid">{visibleGallery.map((project)=><ProjectCard key={project.id} project={project} onOpen={setSelectedProject} />)}</div>
+      </section>
+
+      <section id="experience" className="section editorial-experience-section">
+        <div className="container">
+          <div className="section-heading editorial-section-heading"><div><SectionLabel>04 — EXPERIENCE</SectionLabel><h2>Where I’ve contributed.</h2><p>Professional experience across frontend engineering and applied AI research.</p></div></div>
+          <div className="timeline editorial-timeline">
+            <Experience title="AI Research Intern" company="Planto AI" date="Nov 2024 – May 2025" mode="Remote" tone="cyan" bullets={["Designed prompt-engineering and RAG workflows that improved response relevance by 35%.","Evaluated LangChain features against 500+ test queries and reduced hallucination rate by approximately 25%.","Optimized vector retrieval and reduced average copilot response latency by 30%."]} />
+            <Experience title="Frontend Developer" company="Biz Trade Mart — Bizindo Trade Mart Pvt. Ltd." date="Dec 2024 – Feb 2026" mode="Remote" tone="green" bullets={["Built reusable React and Tailwind components across 10+ product modules, reducing UI development time by 40%.","Improved Lighthouse performance from 62 to 91 through lazy loading, code splitting and memoization.","Resolved 30+ cross-browser regressions and helped reduce production bug reports by 35%."]} />
+          </div>
+        </div>
+      </section>
+
+      <section id="education" className="section editorial-education-section"><div className="container"><div className="section-heading editorial-section-heading"><div><SectionLabel>05 — EDUCATION</SectionLabel><h2>Learning the foundations.</h2><p>Formal study in computer science, with a focus on AI and machine learning.</p></div></div><div className="education-grid"><article className="education-item"><span className="mono-label">2024 — 2027</span><h3>Bachelor of Technology</h3><p>Computer Science & Engineering — Artificial Intelligence and Machine Learning</p><div className="education-meta"><span>Dr. A.P.J. Abdul Kalam Technical University</span><b>CGPA 7.13 · through 6th semester</b></div></article><article className="education-item"><span className="mono-label">2021 — 2024</span><h3>Diploma</h3><p>Computer Science Engineering</p><div className="education-meta"><span>Government Technical Institute, Kanpur</span><b>CGPA 7.5</b></div></article></div></div></section>\n\n      <section id="skills" className="section container editorial-skills-section">
+        <div className="section-heading editorial-section-heading"><div><SectionLabel>06 — TOOLKIT</SectionLabel><h2>Tools I work with.</h2><p>A practical stack for building and shipping AI-enabled applications.</p></div></div>
+        <div className="editorial-skills-grid">
+          <SkillDomain title="Applied AI" label="LLM APPLICATIONS" items={["LangChain","LangGraph","RAG Pipelines","Prompt Engineering","Groq / Mistral / OpenAI APIs","ChromaDB","FAISS","ML Model Optimization"]} tone="violet" />
+          <SkillDomain title="Backend & Data" label="SERVICES / DATA" items={["Python","Java","SQL","FastAPI","Node.js","Express.js","PostgreSQL","MySQL","MongoDB","SQLite","REST APIs","JWT / OAuth2"]} tone="amber" />
+          <SkillDomain title="Frontend" label="PRODUCT INTERFACES" items={["React.js","Next.js","TypeScript","JavaScript ES6+","Tailwind CSS","Material UI","HTML5","CSS3"]} tone="cyan" />
+          <SkillDomain title="Engineering" label="DELIVERY" items={["Docker","Git","Vercel","Jest","Pytest","OOP","Agile / Scrum","Code Review"]} tone="green" />
+        </div>
+      </section>
+
+      <section id="contact" className="contact-section section container editorial-contact-section">
+        <div className="contact-copy"><SectionLabel>07 — CONTACT</SectionLabel><h2>Let’s build something <em>useful.</em></h2><p>I’m interested in remote AI Engineer opportunities and thoughtful product work. If you’re building with LLMs or need a full-stack product engineer, I’d be glad to hear from you.</p><div className="contact-links"><a href="mailto:abhishkdk@gmail.com"><Mail size={16} /><span><small>EMAIL</small>abhishkdk@gmail.com</span><ArrowRight size={14} /></a><a href="https://github.com/Abhishk-Kumar" target="_blank" rel="noreferrer"><Github size={16} /><span><small>GITHUB</small>Abhishk-Kumar</span><ArrowRight size={14} /></a><a href="https://linkedin.com/in/abhishkatwork" target="_blank" rel="noreferrer"><Linkedin size={16} /><span><small>LINKEDIN</small>abhishkatwork</span><ArrowRight size={14} /></a></div></div>
+        <div className="contact-form-card editorial-contact-card"><div className="form-heading"><div><h3>Send an enquiry</h3><p>Submitting opens a pre-filled email in your mail app.</p></div><Mail size={18} /></div><form onSubmit={handleContactSubmit}><div className="form-row"><input name="name" required placeholder="Your name" aria-label="Your name" /><input name="email" required type="email" placeholder="Email address" aria-label="Email address" /></div><select name="topic" aria-label="What is this about?" defaultValue=""><option value="">What is this about? (optional)</option><option>AI Engineer opportunity</option><option>AI product development</option><option>Full-stack development</option><option>Something else</option></select><textarea name="message" required rows={5} placeholder="A little about what you have in mind…" aria-label="Message" /><button className="primary-button" type="submit">Prepare email <ArrowUpRight size={14} /></button></form></div>
+      </section>
     </main>
-	    <footer className="footer container"><div className="footer-cta"><div><SectionLabel>TRANSMIT DATA</SectionLabel><h2>Ready to build something impactful together?</h2><p>Let's create modern web experiences, AI-powered products, and scalable solutions.</p></div><a className="primary-button" href="#contact">CONTACT ME <ArrowUpRight size={15} /></a></div><div className="footer-meta"><span>ABHISHEK KUMAR · ENGINEERED FOR THE NEXT</span><span>© 2025 · ALL SYSTEMS NOMINAL</span></div></footer>
+    <footer className="footer container editorial-footer"><div><a className="brand editorial-brand" href="#about">Abhishek Kumar<span>/AI</span></a><p>AI Engineer · Full-stack product builder · Kanpur, India</p></div><div className="footer-meta"><span>© {new Date().getFullYear()} ABHISHEK KUMAR</span><a href="https://drive.google.com/file/d/1gy_ju_-nIGClPQ5N21pBQGcyyxqnQIEw/view?usp=sharing" target="_blank" rel="noreferrer">RESUME <ArrowUpRight size={12} /></a></div></footer>
     <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />
   </div>;
 }
+
+function ArrowDownRightIcon() { return <ArrowRight size={14} className="arrow-down-right" />; }
+
 
 function Experience({ title, company, date, mode, tone, bullets }: { title: string; company: string; date: string; mode: string; tone: string; bullets: string[] }) { return <article className="experience-card"><span className={`timeline-node ${tone}`} /><div className="experience-top"><div><h3>{title}</h3><p className={tone}>{company}</p><div className="experience-meta"><span>{mode}</span><span>{date}</span></div></div></div><ul>{bullets.map((bullet) => <li key={bullet}>{bullet}</li>)}</ul></article>; }
