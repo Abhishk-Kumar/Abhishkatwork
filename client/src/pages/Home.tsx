@@ -94,7 +94,7 @@ const projects: Project[] = [
     future: "Add reminders, calendar sync, richer availability rules, and an authenticated client workspace.",
 	    tech: ["FastAPI", "Python", "Full-stack"],
 	    image: "/assets/projects/e-consultancy.png",
-	    images: ["/assets/projects/e-consultancy.png", "/assets/projects/e-consultancy-2.png", "/assets/projects/e-consultancy-3.png", "/assets/projects/e-consultancy-4.png"],
+	    images: ["/assets/projects/e-consultancy.png", "/assets/projects/e-consultancy-1.png", "/assets/projects/e-consultancy-2.png", "/assets/projects/e-consultancy-3.png", "/assets/projects/e-consultancy-4.png"],
     live: "https://e-consultancy.onrender.com/",
     accent: "amber",
     placement: "featured",
@@ -117,7 +117,7 @@ const projects: Project[] = [
     future: "Expand automated content workflows, case studies, lead capture, and richer service onboarding.",
 	    tech: ["Next.js", "Vercel"],
 	    image: "/assets/projects/azolic.png",
-	    images: ["/assets/projects/azolic.png", "/assets/projects/azolic-2.png", "/assets/projects/azolic-3.png", "/assets/projects/azolic-4.png"],
+	    images: ["/assets/projects/azolic-1.png", "/assets/projects/azolic-2.png", "/assets/projects/azolic-3.png", "/assets/projects/azolic-4.png"],
     live: "https://azura-rose.vercel.app/",
     accent: "violet",
     placement: "featured",
@@ -214,7 +214,7 @@ function ScreenshotPlaceholder({ project, index = 1, compact = false }: { projec
       <div className="placeholder-scanline" />
       <div className="placeholder-symbol">{project.id === "repogent-ai" ? "◈" : project.id === "hirelens" ? "⌁" : project.id === "mediconnect" ? "✚" : "◌"}</div>
       <span>{project.title.toUpperCase()} · SCREENSHOT {index}</span>
-      <small>Add {index}.png to the project screenshot folder</small>
+      <small>Project preview unavailable</small>
     </div>
   );
 }
@@ -328,7 +328,7 @@ export default function Home() {
         <a className="brand editorial-brand" href="#about">Abhishek Kumar<span>/AI</span></a>
         <div className="editorial-availability"><i /> Open to remote AI Engineer roles</div>
         <nav className={mobileMenu ? "nav-links open" : "nav-links"} aria-label="Main navigation">
-          {[["about","Origin"],["experience","Experience"],["works","Projects"],["skills","Skills"],["contact","Contact"]].map(([id,label],index) => <a key={id} href={`#${id}`} onClick={() => setMobileMenu(false)}><small>0{index + 1}</small> {label}</a>)}
+          {[["about","Origin"],["works","Projects"],["experience","Experience"],["education","Education"],["skills","Skills"],["contact","Contact"]].map(([id,label],index) => <a key={id} href={`#${id}`} onClick={() => setMobileMenu(false)}><small>0{index + 1}</small> {label}</a>)}
         </nav>
         <div className="nav-actions">
           <a className="hire-button editorial-hire" href="#contact">Get in touch <ArrowUpRight size={13} /></a>
@@ -400,18 +400,18 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="skills" className="section container editorial-skills-section">
-        <div className="section-heading editorial-section-heading"><div><SectionLabel>05 — TOOLKIT</SectionLabel><h2>Tools I work with.</h2><p>A practical stack for building and shipping AI-enabled applications.</p></div></div>
+      <section id="education" className="section editorial-education-section"><div className="container"><div className="section-heading editorial-section-heading"><div><SectionLabel>05 — EDUCATION</SectionLabel><h2>Learning the foundations.</h2><p>Formal study in computer science, with a focus on AI and machine learning.</p></div></div><div className="education-grid"><article className="education-item"><span className="mono-label">2024 — 2027</span><h3>Bachelor of Technology</h3><p>Computer Science & Engineering — Artificial Intelligence and Machine Learning</p><div className="education-meta"><span>Dr. A.P.J. Abdul Kalam Technical University</span><b>CGPA 7.13 · through 6th semester</b></div></article><article className="education-item"><span className="mono-label">2021 — 2024</span><h3>Diploma</h3><p>Computer Science Engineering</p><div className="education-meta"><span>Government Technical Institute, Kanpur</span><b>CGPA 7.5</b></div></article></div></div></section>\n\n      <section id="skills" className="section container editorial-skills-section">
+        <div className="section-heading editorial-section-heading"><div><SectionLabel>06 — TOOLKIT</SectionLabel><h2>Tools I work with.</h2><p>A practical stack for building and shipping AI-enabled applications.</p></div></div>
         <div className="editorial-skills-grid">
-          <SkillDomain title="Applied AI" label="LLM APPLICATIONS" items={["LangChain","LangGraph","RAG Pipelines","Prompt Engineering","Groq / Mistral / OpenAI APIs","ChromaDB","FAISS"]} tone="violet" />
-          <SkillDomain title="Backend & Data" label="SERVICES / DATA" items={["Python","FastAPI","Node.js","Express.js","PostgreSQL","MongoDB","REST APIs","JWT / OAuth2"]} tone="amber" />
-          <SkillDomain title="Frontend" label="PRODUCT INTERFACES" items={["React.js","Next.js","TypeScript","JavaScript","Tailwind CSS","Material UI","HTML / CSS"]} tone="cyan" />
-          <SkillDomain title="Engineering" label="DELIVERY" items={["Docker","Git","Vercel","Jest","Pytest","Agile / Scrum","Code Review"]} tone="green" />
+          <SkillDomain title="Applied AI" label="LLM APPLICATIONS" items={["LangChain","LangGraph","RAG Pipelines","Prompt Engineering","Groq / Mistral / OpenAI APIs","ChromaDB","FAISS","ML Model Optimization"]} tone="violet" />
+          <SkillDomain title="Backend & Data" label="SERVICES / DATA" items={["Python","Java","SQL","FastAPI","Node.js","Express.js","PostgreSQL","MySQL","MongoDB","SQLite","REST APIs","JWT / OAuth2"]} tone="amber" />
+          <SkillDomain title="Frontend" label="PRODUCT INTERFACES" items={["React.js","Next.js","TypeScript","JavaScript ES6+","Tailwind CSS","Material UI","HTML5","CSS3"]} tone="cyan" />
+          <SkillDomain title="Engineering" label="DELIVERY" items={["Docker","Git","Vercel","Jest","Pytest","OOP","Agile / Scrum","Code Review"]} tone="green" />
         </div>
       </section>
 
       <section id="contact" className="contact-section section container editorial-contact-section">
-        <div className="contact-copy"><SectionLabel>06 — CONTACT</SectionLabel><h2>Let’s build something <em>useful.</em></h2><p>I’m interested in remote AI Engineer opportunities and thoughtful product work. If you’re building with LLMs or need a full-stack product engineer, I’d be glad to hear from you.</p><div className="contact-links"><a href="mailto:abhishkdk@gmail.com"><Mail size={16} /><span><small>EMAIL</small>abhishkdk@gmail.com</span><ArrowRight size={14} /></a><a href="https://github.com/Abhishk-Kumar" target="_blank" rel="noreferrer"><Github size={16} /><span><small>GITHUB</small>Abhishk-Kumar</span><ArrowRight size={14} /></a><a href="https://linkedin.com/in/abhishkatwork" target="_blank" rel="noreferrer"><Linkedin size={16} /><span><small>LINKEDIN</small>abhishkatwork</span><ArrowRight size={14} /></a></div></div>
+        <div className="contact-copy"><SectionLabel>07 — CONTACT</SectionLabel><h2>Let’s build something <em>useful.</em></h2><p>I’m interested in remote AI Engineer opportunities and thoughtful product work. If you’re building with LLMs or need a full-stack product engineer, I’d be glad to hear from you.</p><div className="contact-links"><a href="mailto:abhishkdk@gmail.com"><Mail size={16} /><span><small>EMAIL</small>abhishkdk@gmail.com</span><ArrowRight size={14} /></a><a href="https://github.com/Abhishk-Kumar" target="_blank" rel="noreferrer"><Github size={16} /><span><small>GITHUB</small>Abhishk-Kumar</span><ArrowRight size={14} /></a><a href="https://linkedin.com/in/abhishkatwork" target="_blank" rel="noreferrer"><Linkedin size={16} /><span><small>LINKEDIN</small>abhishkatwork</span><ArrowRight size={14} /></a></div></div>
         <div className="contact-form-card editorial-contact-card"><div className="form-heading"><div><h3>Send an enquiry</h3><p>Submitting opens a pre-filled email in your mail app.</p></div><Mail size={18} /></div><form onSubmit={handleContactSubmit}><div className="form-row"><input name="name" required placeholder="Your name" aria-label="Your name" /><input name="email" required type="email" placeholder="Email address" aria-label="Email address" /></div><select name="topic" aria-label="What is this about?" defaultValue=""><option value="">What is this about? (optional)</option><option>AI Engineer opportunity</option><option>AI product development</option><option>Full-stack development</option><option>Something else</option></select><textarea name="message" required rows={5} placeholder="A little about what you have in mind…" aria-label="Message" /><button className="primary-button" type="submit">Prepare email <ArrowUpRight size={14} /></button></form></div>
       </section>
     </main>
