@@ -58,7 +58,7 @@ const projects: Project[] = [
     title: "Biz Trade Mart",
     badge: "Frontend Developer · Team role",
     year: "2024",
-    summary: "A faster, more resilient B2B marketplace for buyers and verified suppliers across 100+ countries.",
+    summary: "A B2B marketplace experience connecting buyers and suppliers through discovery, RFQs and clear product workflows.",
     overview: "Multi-country B2B marketplace connecting buyers and verified suppliers through RFQ requests, seller discovery, and category browsing.",
     goals: "Give buyers and suppliers a reliable marketplace experience at scale while shipping new modules quickly.",
     problem: "Marketplace discovery and supplier communication needed to feel fast and trustworthy across a broad set of categories and markets.",
@@ -141,7 +141,7 @@ const projects: Project[] = [
     future: "Add pull-request awareness, team workspaces, visual diffing, and richer architecture recommendations.",
 	    tech: ["LangChain", "LangGraph", "ChromaDB", "Python", "Groq/Mistral API"],
 	    image: "/assets/projects/repogent-ai.png",
-	    images: ["/assets/projects/repogent-ai.png", "/assets/projects/repogent-ai-2.png", "/assets/projects/repogent-ai-3.png", "/assets/projects/repogent-ai-4.png"],
+	    images: ["/assets/projects/repogent-ai.png"],
     live: "https://repoonboarding-agent.onrender.com/",
     accent: "cyan",
     placement: "gallery",
@@ -165,7 +165,7 @@ const projects: Project[] = [
     future: "Add recruiter collaboration, custom scorecards, calibrated rubrics, and exportable hiring packets.",
 	    tech: ["LangChain", "Groq", "FAISS", "Streamlit"],
 	    image: "/assets/projects/hirelens.png",
-	    images: ["/assets/projects/hirelens.png", "/assets/projects/hirelens-2.png", "/assets/projects/hirelens-3.png", "/assets/projects/hirelens-4.png"],
+	    images: ["/assets/projects/hirelens.png"],
     live: "https://hirelens-screener.streamlit.app/",
     accent: "amber",
     placement: "gallery",
@@ -221,7 +221,7 @@ function ScreenshotPlaceholder({ project, index = 1, compact = false }: { projec
 
 function ProjectScreenshot({ project, compact = false, index = 1 }: { project: Project; compact?: boolean; index?: number }) {
   const [failed, setFailed] = useState(false);
-  const source = project.images?.[index - 1] ?? project.image;
+  const source = project.images ? project.images[index - 1] : project.image;
   if (!source || failed) return <ScreenshotPlaceholder project={project} index={index} compact={compact} />;
   return <div className={`project-image-frame accent-${project.accent} ${compact ? "compact" : ""}`}><img src={source} alt={`${project.title} project screenshot ${index}`} loading="lazy" onError={() => setFailed(true)} /></div>;
 }
@@ -240,10 +240,53 @@ function ProjectCard({ project, onOpen }: { project: Project; onOpen: (project: 
 function ProjectModal({ project, onClose }: { project: Project | null; onClose: () => void }) {
   const [shot, setShot] = useState(0);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
-  useEffect(() => { setShot(0); if (project) { document.body.classList.add("modal-open"); closeButtonRef.current?.focus(); } else document.body.classList.remove("modal-open"); return () => document.body.classList.remove("modal-open"); }, [project]);
-  useEffect(() => { if (!project) return; const onKeyDown = (event: KeyboardEvent) => { if (event.key === "Escape") onClose(); if (event.key === "ArrowRight") setShot((value) => (value + 1) % 4); if (event.key === "ArrowLeft") setShot((value) => (value + 3) % 4); }; window.addEventListener("keydown", onKeyDown); return () => window.removeEventListener("keydown", onKeyDown); }, [project, onClose]);
+  const imageCount = project?.images?.length ?? (project?.image ? 1 : 0);
+  useEffect(() => {
+    setShot(0);
+    if (project) {
+      document.body.classList.add("modal-open");
+      closeButtonRef.current?.focus();
+    } else {
+      document.body.classList.remove("modal-open");
+    }
+    return () => document.body.classList.remove("modal-open");
+  }, [project]);
+  useEffect(() => {
+    if (!project) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") onClose();
+      if (imageCount > 1 && event.key === "ArrowRight") setShot((value) => (value + 1) % imageCount);
+      if (imageCount > 1 && event.key === "ArrowLeft") setShot((value) => (value + imageCount - 1) % imageCount);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [project, onClose, imageCount]);
   if (!project) return null;
-  return <div className="modal-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) onClose(); }}><section className="project-modal" role="dialog" aria-modal="true" aria-labelledby="project-modal-title"><div className="modal-heading"><div><div className={`modal-meta accent-text-${project.accent}`}>{project.badge} · {project.year}</div><h2 id="project-modal-title">{project.title}</h2></div><button ref={closeButtonRef} className="icon-button" onClick={onClose} aria-label="Close project details"><X size={20} /></button></div><div className="modal-screens"><ProjectScreenshot project={project} index={shot + 1} /><div className="screenshot-controls"><button className="icon-button" onClick={() => setShot((value) => (value + 3) % 4)} aria-label="Previous screenshot"><ArrowLeft size={17} /></button><div className="screenshot-dots">{[0, 1, 2, 3].map((index) => <button key={index} aria-label={`Show screenshot ${index + 1}`} className={shot === index ? "active" : ""} onClick={() => setShot(index)} />)}</div><button className="icon-button" onClick={() => setShot((value) => (value + 1) % 4)} aria-label="Next screenshot"><ArrowRight size={17} /></button></div></div><div className="modal-techline">{project.tech.join(" · ")}</div><div className="modal-body"><DetailBlock title="Overview"><p>{project.overview}</p></DetailBlock><DetailBlock title="Goals"><p>{project.goals}</p></DetailBlock><DetailBlock title="Problem Statement"><p>{project.problem}</p></DetailBlock><DetailBlock title="Key Features"><ul>{project.features.map((feature) => <li key={feature}><Check size={13} />{feature}</li>)}</ul></DetailBlock><DetailBlock title="Frontend Architecture"><p>{project.frontend}</p></DetailBlock><DetailBlock title="Backend Architecture"><p>{project.backend}</p></DetailBlock>{project.ai && <DetailBlock title="AI Components"><p>{project.ai}</p></DetailBlock>}<DetailBlock title="Technical Challenges"><p>{project.challenges}</p></DetailBlock><DetailBlock title="Technical Implementation"><p>{project.implementation}</p></DetailBlock><DetailBlock title="Tech Stack"><div className="modal-tags">{project.tech.map((tech) => <span key={tech}>{tech}</span>)}</div></DetailBlock><DetailBlock title="Results"><p>{project.results}</p></DetailBlock><DetailBlock title="Future Improvements"><p>{project.future}</p></DetailBlock></div><div className="modal-actions">{project.live && <a className="primary-button" href={project.live} target="_blank" rel="noreferrer">VIEW LIVE PROJECT <ExternalLink size={15} /></a>}{project.github && <a className="secondary-button" href={project.github} target="_blank" rel="noreferrer"><Github size={15} /> GITHUB</a>}</div></section></div>;
+  return <div className="modal-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) onClose(); }}>
+    <section className="project-modal" role="dialog" aria-modal="true" aria-labelledby="project-modal-title">
+      <div className="modal-heading"><div><div className={`modal-meta accent-text-${project.accent}`}>{project.badge} · {project.year}</div><h2 id="project-modal-title">{project.title}</h2></div><button ref={closeButtonRef} className="icon-button" onClick={onClose} aria-label="Close project details"><X size={20} /></button></div>
+      <div className="modal-screens">
+        <ProjectScreenshot project={project} index={shot + 1} />
+        {imageCount > 1 && <div className="screenshot-controls"><button className="icon-button" onClick={() => setShot((value) => (value + imageCount - 1) % imageCount)} aria-label="Previous screenshot"><ArrowLeft size={17} /></button><div className="screenshot-dots">{Array.from({ length: imageCount }, (_, index) => <button key={index} aria-label={`Show screenshot ${index + 1}`} className={shot === index ? "active" : ""} onClick={() => setShot(index)} />)}</div><button className="icon-button" onClick={() => setShot((value) => (value + 1) % imageCount)} aria-label="Next screenshot"><ArrowRight size={17} /></button></div>}
+      </div>
+      <div className="modal-techline">{project.tech.join(" · ")}</div>
+      <div className="modal-body">
+        <DetailBlock title="Overview"><p>{project.overview}</p></DetailBlock>
+        <DetailBlock title="Goals"><p>{project.goals}</p></DetailBlock>
+        <DetailBlock title="Problem Statement"><p>{project.problem}</p></DetailBlock>
+        <DetailBlock title="Key Features"><ul>{project.features.map((feature) => <li key={feature}><Check size={13} />{feature}</li>)}</ul></DetailBlock>
+        <DetailBlock title="Frontend Architecture"><p>{project.frontend}</p></DetailBlock>
+        <DetailBlock title="Backend Architecture"><p>{project.backend}</p></DetailBlock>
+        {project.ai && <DetailBlock title="AI Components"><p>{project.ai}</p></DetailBlock>}
+        <DetailBlock title="Technical Challenges"><p>{project.challenges}</p></DetailBlock>
+        <DetailBlock title="Technical Implementation"><p>{project.implementation}</p></DetailBlock>
+        <DetailBlock title="Tech Stack"><div className="modal-tags">{project.tech.map((tech) => <span key={tech}>{tech}</span>)}</div></DetailBlock>
+        <DetailBlock title="Results"><p>{project.results}</p></DetailBlock>
+        <DetailBlock title="Future Improvements"><p>{project.future}</p></DetailBlock>
+      </div>
+      <div className="modal-actions">{project.live && <a className="primary-button" href={project.live} target="_blank" rel="noreferrer">VIEW LIVE PROJECT <ExternalLink size={15} /></a>}{project.github && <a className="secondary-button" href={project.github} target="_blank" rel="noreferrer"><Github size={15} /> GITHUB</a>}</div>
+    </section>
+  </div>;
 }
 
 function DetailBlock({ title, children }: { title: string; children: React.ReactNode }) { return <div className="detail-block"><h3>{title}</h3>{children}</div>; }
