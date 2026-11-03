@@ -2,27 +2,14 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import {
   ArrowLeft,
   ArrowRight,
-	  ArrowUpRight,
-	  Brain,
-	  Bot,
+  ArrowUpRight,
   Check,
-  ChevronDown,
-  Clock3,
-  Code2,
-  Database,
   Eye,
   ExternalLink,
   Github,
-  Layers3,
   Linkedin,
   Mail,
-  MapPin,
   Menu,
-  Palette,
-  Send,
-  ShieldCheck,
-  Sparkles,
-  Video,
   X,
 } from "lucide-react";
 
@@ -197,13 +184,6 @@ const projects: Project[] = [
 const featuredProjects = projects.filter((project) => ["repogent-ai", "hirelens", "biz-trade-mart"].includes(project.id));
 const galleryProjects = projects.filter((project) => !featuredProjects.some((featured) => featured.id === project.id));
 
-const skills = [
-  { icon: Code2, title: "Full Stack Engineering", tag: "WEB3.0", tone: "cyan", copy: "Building scalable, robust web applications from intuitive frontends to complex backend infrastructures.", items: ["SPA Development", "API Integration", "Database Design"] },
-  { icon: Bot, title: "AI Solutions", tag: "CORE", tone: "blue", copy: "Integrating advanced AI models to create intelligent chatbots, predictive systems, and automated workflows.", items: ["LLM Integration", "Neural Networks", "Smart Agents"] },
-  { icon: Sparkles, title: "Automation", tag: "BOTS", tone: "rose", copy: "Streamlining business processes with custom bots, scrapers, and workflow automation tools.", items: ["Browser Automation", "Data Extraction", "Workflow Scripts"] },
-  { icon: Palette, title: "Design", tag: "UI/UX", tone: "amber", copy: "Creating visual experiences with modern design principles, from wireframes to polished interfaces.", items: ["Figma", "Brand Identity", "Motion Graphics"] },
-];
-
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return <span className="section-label">{children}</span>;
 }
@@ -299,11 +279,6 @@ export default function Home() {
   const [mobileMenu, setMobileMenu] = useState(false);
   const [filter, setFilter] = useState("All");
   const visibleGallery = useMemo(() => filter === "All" ? galleryProjects : galleryProjects.filter((project) => filter === "Client work" ? project.id === "e-consultancy" || project.id === "azolic" : filter === "Full Stack" ? project.id === "mediconnect" || project.id === "e-consultancy" : false), [filter]);
-  useEffect(() => {
-    if (selectedProject) return;
-    const timer = window.setInterval(() => setActiveSlide((value) => (value + 1) % featuredProjects.length), 6500);
-    return () => window.clearInterval(timer);
-  }, [selectedProject]);
   useEffect(() => {
     document.body.classList.toggle("mobile-menu-open", mobileMenu);
     return () => document.body.classList.remove("mobile-menu-open");
