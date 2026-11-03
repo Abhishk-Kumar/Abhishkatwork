@@ -255,7 +255,7 @@ export default function Home() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [mobileMenu, setMobileMenu] = useState(false);
   const [filter, setFilter] = useState("All");
-  const visibleGallery = useMemo(() => filter === "All" ? galleryProjects : galleryProjects.filter((project) => filter === "AI / ML" ? project.id === "repogent-ai" || project.id === "hirelens" : filter === "Full Stack" ? project.id === "mediconnect" || project.id === "e-consultancy" : false), [filter]);
+  const visibleGallery = useMemo(() => filter === "All" ? galleryProjects : galleryProjects.filter((project) => filter === "Client work" ? project.id === "e-consultancy" || project.id === "azolic" : filter === "Full Stack" ? project.id === "mediconnect" || project.id === "e-consultancy" : false), [filter]);
   useEffect(() => {
     if (selectedProject) return;
     const timer = window.setInterval(() => setActiveSlide((value) => (value + 1) % featuredProjects.length), 6500);
@@ -284,12 +284,12 @@ export default function Home() {
       <div className="container nav-inner">
         <a className="brand editorial-brand" href="#about">Abhishek Kumar<span>/AI</span></a>
         <div className="editorial-availability"><i /> Open to remote AI Engineer roles</div>
-        <nav className={mobileMenu ? "nav-links open" : "nav-links"}>
+        <nav className={mobileMenu ? "nav-links open" : "nav-links"} aria-label="Main navigation">
           {[["about","Origin"],["experience","Experience"],["works","Projects"],["skills","Skills"],["contact","Contact"]].map(([id,label],index) => <a key={id} href={`#${id}`} onClick={() => setMobileMenu(false)}><small>0{index + 1}</small> {label}</a>)}
         </nav>
         <div className="nav-actions">
           <a className="hire-button editorial-hire" href="#contact">Get in touch <ArrowUpRight size={13} /></a>
-          <button className="menu-button" onClick={() => setMobileMenu((value) => !value)} aria-label="Toggle navigation">{mobileMenu ? <X size={19} /> : <Menu size={19} />}</button>
+          <button className="menu-button" onClick={() => setMobileMenu((value) => !value)} aria-label="Toggle navigation" aria-expanded={mobileMenu}>{mobileMenu ? <X size={19} /> : <Menu size={19} />}</button>
         </div>
       </div>
     </header>
@@ -343,7 +343,7 @@ export default function Home() {
           </div>
         </div>
         <div className="pagination editorial-pagination">{featuredProjects.map((project,index)=><button key={project.id} onClick={()=>setActiveSlide(index)} className={index===activeSlide?"active":""} aria-label={`Show ${project.title}`} />)}</div>
-        <div className="archive-heading editorial-archive-heading"><div><SectionLabel>03 — MORE PROJECTS</SectionLabel><h3>Other selected work</h3></div><div className="filter-tabs">{["All","Full Stack","AI / ML"].map((item)=><button key={item} className={filter===item?"selected":""} onClick={()=>setFilter(item)}>{item}</button>)}</div></div>
+        <div className="archive-heading editorial-archive-heading"><div><SectionLabel>03 — MORE PROJECTS</SectionLabel><h3>Other selected work</h3></div><div className="filter-tabs">{["All","Client work","Full Stack"].map((item)=><button key={item} className={filter===item?"selected":""} onClick={()=>setFilter(item)}>{item}</button>)}</div></div>
         <div className="gallery-grid editorial-gallery-grid">{visibleGallery.map((project)=><ProjectCard key={project.id} project={project} onOpen={setSelectedProject} />)}</div>
       </section>
 
@@ -354,7 +354,6 @@ export default function Home() {
             <Experience title="AI Research Intern" company="Planto AI" date="Nov 2024 – May 2025" mode="Remote" tone="cyan" bullets={["Designed prompt-engineering and RAG workflows that improved response relevance by 35%.","Evaluated LangChain features against 500+ test queries and reduced hallucination rate by approximately 25%.","Optimized vector retrieval and reduced average copilot response latency by 30%."]} />
             <Experience title="Frontend Developer" company="Biz Trade Mart — Bizindo Trade Mart Pvt. Ltd." date="Dec 2024 – Feb 2026" mode="Remote" tone="green" bullets={["Built reusable React and Tailwind components across 10+ product modules, reducing UI development time by 40%.","Improved Lighthouse performance from 62 to 91 through lazy loading, code splitting and memoization.","Resolved 30+ cross-browser regressions and helped reduce production bug reports by 35%."]} />
           </div>
-          <p className="editorial-date-note">Dates are shown as listed in the current resume; the two roles overlap and should be confirmed before publication.</p>
         </div>
       </section>
 
